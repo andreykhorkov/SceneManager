@@ -4,50 +4,31 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 [InitializeOnLoad]
-[CustomEditor(typeof(Temp))]
-public class EditorSceneLoader : Editor
+public static class EditorSceneLoader
 {
-    public override void OnInspectorGUI()
+    private static Scene lastScene;
+
+    static EditorSceneLoader()
     {
-        base.OnInspectorGUI();
-
-        if (GUILayout.Button("suka", EditorStyles.miniButton))
-        {
-            EditorSceneManager.OpenScene("Assets/Scenes/1.unity", OpenSceneMode.Additive);
-        }
-    }
-
-    void OnEnable()
-    {
-        SceneManager.sceneLoaded += OnLevelFinishedLoading;
-    }
-
-    void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
-    {
-        Debug.Log("Level Loaded");
-        Debug.Log(scene.name);
-        Debug.Log(mode);
-    }
-}
-
-[InitializeOnLoad]
-public static class LatestScenes
-{
-    private static string currentScene;
-
-    static LatestScenes()
-    {
-        currentScene = EditorApplication.currentScene;
-        EditorApplication.hierarchyWindowChanged += hierarchyWindowChanged;
+        lastScene = SceneManager.GetActiveScene();
+        EditorApplication.hierarchyChanged += hierarchyWindowChanged;
     }
 
     private static void hierarchyWindowChanged()
     {
-        if (currentScene != EditorApplication.currentScene)
+        var currentScene = SceneManager.GetActiveScene();
+
+        if (lastScene != currentScene)
         {
-            //a scene change has happened
-            Debug.Log("Last Scene: " + currentScene);
-            currentScene = EditorApplication.currentScene;
+            OnSceneLoded(currentScene);
         }
+    }
+
+    private static void OnSceneLoded(Scene scene)
+    {
+        Debug.LogFormat("{0} scene loaded", scene.name);
+        lastScene = scene;
+
+        EditorSceneManager.OpenScene("Assets/Scenes/1.unity", OpenSceneMode.Additive);
     }
 }
