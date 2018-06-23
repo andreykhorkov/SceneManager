@@ -29,6 +29,12 @@ public static class EditorSceneLoader
         Debug.LogFormat("{0} scene loaded", scene.name);
         lastScene = scene;
 
-        EditorSceneManager.OpenScene("Assets/Scenes/1.unity", OpenSceneMode.Additive);
+        DependentScenes depScenes = (DependentScenes) AssetDatabase.LoadAssetAtPath("Assets/DependentScenes.asset", typeof(DependentScenes));
+
+        for (int i = 0; i < depScenes.Scenes.Count; i++)
+        {
+            var subScene = EditorSceneManager.OpenScene(depScenes.Scenes[i], OpenSceneMode.Additive);
+            SceneManager.SetActiveScene(subScene);
+        }
     }
 }
