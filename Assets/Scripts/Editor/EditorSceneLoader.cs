@@ -29,11 +29,27 @@ public static class EditorSceneLoader
         Debug.LogFormat("{0} scene loaded", scene.name);
         lastScene = scene;
 
-        DependentScenes depScenes = (DependentScenes) AssetDatabase.LoadAssetAtPath("Assets/DependentScenes.asset", typeof(DependentScenes));
+        var rootObjs = lastScene.GetRootGameObjects();
+        SceneData sceneData = null;
 
-        for (int i = 0; i < depScenes.Scenes.Count; i++)
+        for (int i = 0; i < rootObjs.Length; i++)
         {
-            var subScene = EditorSceneManager.OpenScene(depScenes.Scenes[i], OpenSceneMode.Additive);
+            sceneData = rootObjs[i].GetComponent<SceneData>();
+
+            if (sceneData != null)
+            {
+                break;
+            }
+        }
+
+        if (sceneData == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < sceneData.DependentScenes.Scenes.Count; i++)
+        {
+            var subScene = EditorSceneManager.OpenScene(sceneData.DependentScenes.Scenes[i], OpenSceneMode.Additive);
             SceneManager.SetActiveScene(subScene);
         }
     }
