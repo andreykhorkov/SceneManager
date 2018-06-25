@@ -9,7 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c8fbdec5b4c792546ac719e4c3e66f1b, type: 3}
-  m_Name: suka
+  m_Name: multiScene
   m_EditorClassIdentifier: 
   sceneSetups:
   - guid: 7acf7a47da646104081e75993d64ac26
@@ -19,5 +19,11 @@ MonoBehaviour:
     isActive: 0
     isLoaded: 1
   - guid: 26ab761f5e2b16240a0b0519b9dcfef6
+    isActive: 0
+    isLoaded: 1
+  - guid: df930de9eb94b774caba69d1fff8347a
     isActive: 1
+    isLoaded: 1
+  - guid: d7162731ae619404db62d45570ca573d
+    isActive: 0
     isLoaded: 1
