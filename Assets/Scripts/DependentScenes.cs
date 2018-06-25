@@ -7,6 +7,5 @@ public class DependentScenes : ScriptableObject
 
     [SerializeField, AssetFullPathGetter] private List<string> scenes;
 
-    public List<string> Scenes { get { return scenes; } } 
-
+    public List<string> Scenes { get { return scenes; } }
 }
