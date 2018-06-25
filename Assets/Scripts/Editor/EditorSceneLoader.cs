@@ -6,30 +6,14 @@ using UnityEngine.SceneManagement;
 [InitializeOnLoad]
 public static class EditorSceneLoader
 {
-    private static Scene lastScene;
-
     static EditorSceneLoader()
     {
-        lastScene = SceneManager.GetActiveScene();
-        EditorApplication.hierarchyChanged += hierarchyWindowChanged;
+        EditorSceneManager.sceneOpened += OnSceneOpened;
     }
 
-    private static void hierarchyWindowChanged()
+    private static void OnSceneOpened(Scene scene, OpenSceneMode mode)
     {
-        var currentScene = SceneManager.GetActiveScene();
-
-        if (lastScene != currentScene)
-        {
-            OnSceneLoded(currentScene);
-        }
-    }
-
-    private static void OnSceneLoded(Scene scene)
-    {
-        Debug.LogFormat("{0} scene loaded", scene.name);
-        lastScene = scene;
-
-        var rootObjs = lastScene.GetRootGameObjects();
+        var rootObjs = scene.GetRootGameObjects();
         SceneData sceneData = null;
 
         for (int i = 0; i < rootObjs.Length; i++)
