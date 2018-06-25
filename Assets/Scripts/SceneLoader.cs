@@ -1,14 +1,31 @@
-﻿using System;
-using UnityEditor;
-using UnityEditor.SceneManagement;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-[InitializeOnLoad]
-public static class SceneLoader
+public class SceneLoader : MonoBehaviour
 {
-    static SceneLoader()
+    public static SceneLoader Instance { get; private set; }
+
+    public SceneADependencies dep;
+
+    void Awake()
     {
+        Instance = this;
+        DontDestroyOnLoad(this);
         SceneManager.sceneLoaded += SceneManagerOnSceneLoaded;
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            dep = gameObject.AddComponent<SceneADependencies>();
+            SceneManager.LoadScene("A");
+        }
+
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            Debug.Log(dep.SceneBData.BData);
+        }
     }
 
     private static void SceneManagerOnSceneLoaded(Scene scene, LoadSceneMode mode)
