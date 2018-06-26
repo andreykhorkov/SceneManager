@@ -31,9 +31,9 @@ public static class EditorSceneLoader
             return;
         }
 
-        for (int i = 0; i < sceneData.DependentScenes.Scenes.Count; i++)
+        for (int i = 0; i < sceneData.Scenes.Count; i++)
         {
-            var subScene = EditorSceneManager.OpenScene(sceneData.DependentScenes.Scenes[i], OpenSceneMode.Additive);
+            var subScene = EditorSceneManager.OpenScene(sceneData.Scenes[i], OpenSceneMode.Additive);
             SceneManager.SetActiveScene(subScene);
         }
     }

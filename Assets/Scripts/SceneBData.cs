@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public class SceneBData : MonoBehaviour
+﻿public class SceneBData : SceneData
 {
 
 	public string BData { get { return "BBB"; } }
@@ -8,7 +6,7 @@ public class SceneBData : MonoBehaviour
     void Start()
     {
         var sceneADependencies = SceneLoader.Instance.GetComponent<SceneADependencies>();
-        sceneADependencies.Resolve(this);
+        sceneADependencies.SetData(this);
     }
 
 }

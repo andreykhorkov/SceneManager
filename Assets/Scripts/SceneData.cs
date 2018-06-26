@@ -1,12 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class SceneData : MonoBehaviour
 {
 
-    [SerializeField] private DependentScenes dependentScenes;
+    [SerializeField, AssetFullPathGetter] private List<string> scenes;
 
-    public DependentScenes DependentScenes { get { return dependentScenes; } }
+    public List<string> Scenes { get { return scenes; } }
 
 }

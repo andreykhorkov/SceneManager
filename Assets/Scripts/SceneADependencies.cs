@@ -2,11 +2,10 @@
 
 public class SceneADependencies : MonoBehaviour
 {
-    public SceneBData SceneBData { get; private set; }
+    public SceneBData SceneBData { get; protected set; }
 
-    public void Resolve(SceneBData sceneBData)
+    public void SetData(SceneBData sceneData)
     {
-        SceneBData = sceneBData;
+        SceneBData = sceneData;
     }
-
 }

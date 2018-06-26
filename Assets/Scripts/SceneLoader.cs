@@ -5,7 +5,7 @@ public class SceneLoader : MonoBehaviour
 {
     public static SceneLoader Instance { get; private set; }
 
-    public SceneADependencies dep;
+    public SceneADependencies sceneADependenciesData;
 
     void Awake()
     {
@@ -18,13 +18,13 @@ public class SceneLoader : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
-            dep = gameObject.AddComponent<SceneADependencies>();
+            sceneADependenciesData = gameObject.AddComponent<SceneADependencies>();
             SceneManager.LoadScene("A");
         }
 
         if (Input.GetKeyDown(KeyCode.B))
         {
-            Debug.Log(dep.SceneBData.BData);
+            Debug.Log(sceneADependenciesData.SceneBData.BData);
         }
     }
 
@@ -48,9 +48,9 @@ public class SceneLoader : MonoBehaviour
             return;
         }
 
-        for (int i = 0; i < sceneData.DependentScenes.Scenes.Count; i++)
+        for (int i = 0; i < sceneData.Scenes.Count; i++)
         {
-            SceneManager.LoadScene(sceneData.DependentScenes.Scenes[i], LoadSceneMode.Additive);
+            SceneManager.LoadScene(sceneData.Scenes[i], LoadSceneMode.Additive);
         }
     }
 }
