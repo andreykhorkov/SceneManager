@@ -9,7 +9,7 @@ public class ObjectToFullpathEditorWidget : PropertyDrawer
     public override void OnGUI(Rect initialRect, SerializedProperty property, GUIContent label)
     {
         var defaultLineHeight = base.GetPropertyHeight(property, label);
-        label.text += ": ";
+        label.text = "";
 
         EditorGUI.BeginProperty(initialRect, label, property);
         EditorGUI.PrefixLabel(initialRect, GUIUtility.GetControlID(FocusType.Passive), label);
