@@ -5,7 +5,7 @@ public class SceneLoader : MonoBehaviour
 {
     public static SceneLoader Instance { get; private set; }
 
-    public SceneADependencies sceneADependenciesData;
+    private SceneADependencies sceneADependenciesData;
 
     void Awake()
     {
