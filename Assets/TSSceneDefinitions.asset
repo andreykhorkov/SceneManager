@@ -13,11 +13,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rootScenePath: Assets/Scenes/Main.unity
   loadableScenes:
-  - scenePath: Assets/Scenes/A.unity
-    subScenes: []
-  - scenePath: Assets/Scenes/B.unity
-    subScenes: []
   - scenePath: Assets/Scenes/D.unity
     subScenes:
     - scenePath: Assets/Scenes/D_A.unity
+      subScenes: []
+  - scenePath: Assets/Scenes/A.unity
+    subScenes:
+    - scenePath: Assets/Scenes/B.unity
+      subScenes: []
+    - scenePath: Assets/Scenes/C.unity
       subScenes: []

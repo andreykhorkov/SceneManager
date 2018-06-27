@@ -1,7 +1,11 @@
-﻿using UnityEditor;
+﻿using System;
+using System.Linq;
+using System.Reflection;
+using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Object = UnityEngine.Object;
 
 [CustomPropertyDrawer(typeof(AssetFullPathGetterAttribute))]
 public class ObjectToFullpathEditorWidget : PropertyDrawer
@@ -11,6 +15,9 @@ public class ObjectToFullpathEditorWidget : PropertyDrawer
 
     public override void OnGUI(Rect initialRect, SerializedProperty property, GUIContent label)
     {
+        var t = property.serializedObject.targetObject as SceneDefinitions;
+        Debug.Log(t.LoadableScenes);
+
         var defaultLineHeight = base.GetPropertyHeight(property, label);
         label.text = "";
 
@@ -48,6 +55,8 @@ public class ObjectToFullpathEditorWidget : PropertyDrawer
             {
                 SceneManager.UnloadSceneAsync(scenesArr[i]);
             }
+
+            var myDataClass = PropertyDrawerUtility.GetActualObjectForSerializedProperty<SceneDefinitions>(fieldInfo, property);
         }
 
         property.stringValue = path;
@@ -67,5 +76,26 @@ public class ObjectToFullpathEditorWidget : PropertyDrawer
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
         return base.GetPropertyHeight(property, label) * 3;
+    }
+}
+
+public class PropertyDrawerUtility
+{
+    public static T GetActualObjectForSerializedProperty<T>(FieldInfo fieldInfo, SerializedProperty property) where T : class
+    {
+        var obj = fieldInfo.GetValue(property.serializedObject.targetObject);
+        if (obj == null) { return null; }
+
+        T actualObject = null;
+        if (obj.GetType().IsArray)
+        {
+            var index = Convert.ToInt32(new string(property.propertyPath.Where(c => char.IsDigit(c)).ToArray()));
+            actualObject = ((T[])obj)[index];
+        }
+        else
+        {
+            actualObject = obj as T;
+        }
+        return actualObject;
     }
 }
