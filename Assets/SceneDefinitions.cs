@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 [Serializable]
@@ -9,11 +10,11 @@ public class CompositeScene
     [SerializeField] private List<CompositeScene> subScenes;
 
     public string ScenePath { get { return scenePath; } }
-    public List<CompositeScene> SubScenes { get { return subScenes; } }
+    public List<CompositeScene> SubScenes { get { return subScenes; } } 
 }
 
 [CreateAssetMenu(fileName = "SceneDefinitions")]
-public class SceneDefinitions : ScriptableObject
+public class SceneDefinitions : SerializedScriptableObject
 {
     [AssetFullPathGetter, SerializeField] private string rootScenePath;
     [SerializeField] private List<CompositeScene> loadableScenes;

@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.SceneManagement;
 using Object = UnityEngine.Object;
 
@@ -15,9 +17,6 @@ public class ObjectToFullpathEditorWidget : PropertyDrawer
 
     public override void OnGUI(Rect initialRect, SerializedProperty property, GUIContent label)
     {
-        var t = property.serializedObject.targetObject as SceneDefinitions;
-        Debug.Log(t.LoadableScenes);
-
         var defaultLineHeight = base.GetPropertyHeight(property, label);
         label.text = "";
 
@@ -46,23 +45,90 @@ public class ObjectToFullpathEditorWidget : PropertyDrawer
 
             for (int i = 0; i < SceneManager.sceneCount; i++)
             {
-                scenesArr[i] = SceneManager.GetSceneAt(i);
+                EditorSceneManager.CloseScene(EditorSceneManager.GetSceneAt(i), true);
             }
 
-            EditorSceneManager.OpenScene(path, OpenSceneMode.Additive);
+            var sceneDefinitions = property.serializedObject.targetObject as SceneDefinitions;
 
-            for (int i = 0; i < scenesArr.Length; i++)
+            CompositeScene compositeScene = null;
+
+            if (TryFindSceneRecursively(path, sceneDefinitions.LoadableScenes, out compositeScene))
             {
-                SceneManager.UnloadSceneAsync(scenesArr[i]);
+                LoadSceneAndItsChildren(compositeScene, sceneDefinitions);
             }
-
-            var myDataClass = PropertyDrawerUtility.GetActualObjectForSerializedProperty<SceneDefinitions>(fieldInfo, property);
+            else
+            {
+                Debug.LogError("Can't load scene " + path);
+                return;
+            }
         }
 
         property.stringValue = path;
 
         EditorGUI.LabelField(pathLabelRect, path);
         EditorGUI.EndProperty();
+    }
+
+    private bool TryFindSceneRecursively(string path, List<CompositeScene> scenes, out CompositeScene foundScene)
+    {
+        for (int i = 0; i < scenes.Count; i++)
+        {
+            var comp = scenes[i];
+
+            if (string.Equals(path, comp.ScenePath))
+            {
+                foundScene = comp;
+                return true;
+            }
+        }
+
+        for (int i = 0; i < scenes.Count; i++)
+        {
+            var comp = scenes[i];
+
+            if (TryFindSceneRecursively(path, comp.SubScenes, out foundScene))
+            {
+                return true;
+            }
+        }
+
+        foundScene = null;
+        return false;
+    }
+
+    private void LoadSceneAndItsChildren(CompositeScene parentCompositeScene, SceneDefinitions sceneDefinitions)
+    {
+        //load root scene additively
+        EditorSceneManager.OpenScene(sceneDefinitions.RootScenePath, OpenSceneMode.Single);
+
+        //unload previous scenes to avoid nullrefs
+
+        EditorSceneManager.OpenScene(parentCompositeScene.ScenePath, OpenSceneMode.Additive);
+
+        OpenChildrenRecursively(parentCompositeScene);
+    }
+
+    private void OpenChildrenRecursively(CompositeScene scene)
+    {
+        foreach (var child in scene.SubScenes)
+        {
+            EditorSceneManager.OpenScene(child.ScenePath, OpenSceneMode.Additive);
+            OpenChildrenRecursively(child);
+        }
+    }
+
+    private void IterateSubScenes(List<CompositeScene> subScenes, string scenePath)
+    {
+        for (int i = 0; i < subScenes.Count; i++)
+        {
+            if (string.Equals(subScenes[i].ScenePath, scenePath))
+            {
+                EditorSceneManager.OpenScene(subScenes[i].ScenePath, OpenSceneMode.Additive);
+                IterateSubScenes(subScenes[i].SubScenes, subScenes[i].ScenePath);
+                return;
+            }
+
+        }
     }
 
     protected virtual void SetPath(ref string path, ref Rect initialRect, ref float defaultLineHeight)
