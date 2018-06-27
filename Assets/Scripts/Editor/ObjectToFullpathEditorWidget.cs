@@ -35,15 +35,20 @@ public class ObjectToFullpathEditorWidget : PropertyDrawer
         }
         else if (GUI.Button(loadSceneBtnRect, LOAD_SCENE_BTN_TEXT))
         {
-            EditorSceneManager.OpenScene(path);
-            return;
-        }
+            var scenesArr = new Scene[SceneManager.sceneCount];
 
-        //EditorApplication.delayCall += () =>
-        //{
-        //    EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
-        //    //Selection.activeObject = this;
-        //};
+            for (int i = 0; i < SceneManager.sceneCount; i++)
+            {
+                scenesArr[i] = SceneManager.GetSceneAt(i);
+            }
+
+            EditorSceneManager.OpenScene(path, OpenSceneMode.Additive);
+
+            for (int i = 0; i < scenesArr.Length; i++)
+            {
+                SceneManager.UnloadSceneAsync(scenesArr[i]);
+            }
+        }
 
         property.stringValue = path;
 

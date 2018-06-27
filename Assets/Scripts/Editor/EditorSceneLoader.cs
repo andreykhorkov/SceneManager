@@ -1,39 +1,39 @@
-﻿using UnityEditor;
-using UnityEditor.SceneManagement;
-using UnityEngine.SceneManagement;
+﻿//using UnityEditor;
+//using UnityEditor.SceneManagement;
+//using UnityEngine.SceneManagement;
 
-[InitializeOnLoad]
-public static class EditorSceneLoader
-{
-    static EditorSceneLoader()
-    {
-        EditorSceneManager.sceneOpened += OnSceneOpened;
-    }
+//[InitializeOnLoad]
+//public static class EditorSceneLoader
+//{
+//    static EditorSceneLoader()
+//    {
+//        EditorSceneManager.sceneOpened += OnSceneOpened;
+//    }
 
-    private static void OnSceneOpened(Scene scene, OpenSceneMode mode)
-    {
-        var rootObjs = scene.GetRootGameObjects();
-        SceneData sceneData = null;
+//    private static void OnSceneOpened(Scene scene, OpenSceneMode mode)
+//    {
+//        var rootObjs = scene.GetRootGameObjects();
+//        SceneData sceneData = null;
 
-        for (int i = 0; i < rootObjs.Length; i++)
-        {
-            sceneData = rootObjs[i].GetComponent<SceneData>();
+//        for (int i = 0; i < rootObjs.Length; i++)
+//        {
+//            sceneData = rootObjs[i].GetComponent<SceneData>();
 
-            if (sceneData != null)
-            {
-                break;
-            }
-        }
+//            if (sceneData != null)
+//            {
+//                break;
+//            }
+//        }
 
-        if (sceneData == null)
-        {
-            return;
-        }
+//        if (sceneData == null)
+//        {
+//            return;
+//        }
 
-        //for (int i = 0; i < sceneData.Scenes.Count; i++)
-        //{
-        //    var subScene = EditorSceneManager.OpenScene(sceneData.Scenes[i], OpenSceneMode.Additive);
-        //    SceneManager.SetActiveScene(subScene);
-        //}
-    }
-}
+//        //for (int i = 0; i < sceneData.Scenes.Count; i++)
+//        //{
+//        //    var subScene = EditorSceneManager.OpenScene(sceneData.Scenes[i], OpenSceneMode.Additive);
+//        //    SceneManager.SetActiveScene(subScene);
+//        //}
+//    }
+//}
