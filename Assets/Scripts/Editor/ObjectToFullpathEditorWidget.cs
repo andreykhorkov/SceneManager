@@ -27,7 +27,7 @@ public class ObjectToFullpathEditorWidget : PropertyDrawer
         resetBtnRect = new Rect(initialRect.x, initialRect.y + defaultLineHeight, GUI.skin.label.CalcSize(new GUIContent(RESET_BTN_TEXT + 50)).x, initialRect.height);
         pathLabelRect = new Rect(initialRect.x + GUI.skin.label.CalcSize(new GUIContent(label)).x, initialRect.y, initialRect.width, initialRect.height);
         
-        Temp(ref initialRect);
+        DrawThings(ref initialRect);
 
         property.stringValue = path;
 
@@ -35,7 +35,7 @@ public class ObjectToFullpathEditorWidget : PropertyDrawer
         EditorGUI.EndProperty();
     }
 
-    protected virtual void Temp(ref Rect initialRect)
+    protected virtual void DrawThings(ref Rect initialRect)
     {
         if (string.IsNullOrEmpty(path))
         {
