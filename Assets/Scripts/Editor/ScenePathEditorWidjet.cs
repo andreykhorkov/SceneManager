@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -20,7 +19,7 @@ public class ScenePathEditorWidjet : ObjectToFullpathEditorWidget
         base.OnGUI(initialRect, property, label);
     }
 
-    protected override void Temp(ref Rect initialRect)
+    protected override void DrawThings(ref Rect initialRect)
     {
         if (string.IsNullOrEmpty(path))
         {
@@ -39,66 +38,65 @@ public class ScenePathEditorWidjet : ObjectToFullpathEditorWidget
                     EditorSceneManager.CloseScene(SceneManager.GetSceneAt(i), true);
                 }
 
-                var compositeScene = TryFindSceneRecursively(path, sceneDefinitions.LoadableScenes);
+                var compositeScene = Temp.TryFindSceneRecursively(path, sceneDefinitions.LoadableScenes);
 
                 if (compositeScene != null)
                 {
-                    LoadSceneAndItsChildren(compositeScene, sceneDefinitions);
+                    Temp.LoadSceneAndItsSubscenesEditor(compositeScene, sceneDefinitions);
                 }
                 else
                 {
                     Debug.LogError("Can't load scene " + path);
-                    return;
                 }
             }
         }
     }
 
-    private static CompositeScene TryFindSceneRecursively(string path, List<CompositeScene> scenes)
-    {
-        for (int i = 0; i < scenes.Count; i++)
-        {
-            var compositeScene = scenes[i];
+    //private static CompositeScene TryFindSceneRecursively(string path, List<CompositeScene> scenes)
+    //{
+    //    for (int i = 0; i < scenes.Count; i++)
+    //    {
+    //        var compositeScene = scenes[i];
 
-            if (string.Equals(path, compositeScene.ScenePath))
-            {
-                return compositeScene;
-            }
-        }
+    //        if (string.Equals(path, compositeScene.ScenePath))
+    //        {
+    //            return compositeScene;
+    //        }
+    //    }
 
-        for (int i = 0; i < scenes.Count; i++)
-        {
-            var compositeScene = scenes[i];
+    //    for (int i = 0; i < scenes.Count; i++)
+    //    {
+    //        var compositeScene = scenes[i];
 
-            var neededScene = TryFindSceneRecursively(path, compositeScene.SubScenes);
+    //        var neededScene = TryFindSceneRecursively(path, compositeScene.SubScenes);
 
-            if (neededScene != null)
-            {
-                return neededScene;
-            }
-        }
+    //        if (neededScene != null)
+    //        {
+    //            return neededScene;
+    //        }
+    //    }
 
-        return null;
-    }
+    //    return null;
+    //}
 
-    private void LoadSceneAndItsChildren(CompositeScene parentCompositeScene, SceneDefinitions sceneDefinitions)
-    {
-        //load root scene additively
-        EditorSceneManager.OpenScene(sceneDefinitions.RootScenePath, OpenSceneMode.Single);
+    //private static void LoadSceneAndItsChildren(CompositeScene parentCompositeScene, SceneDefinitions sceneDefinitions)
+    //{
+    //    //load root scene additively
+    //    EditorSceneManager.OpenScene(sceneDefinitions.RootScenePath, OpenSceneMode.Single);
 
-        //unload previous scenes to avoid nullrefs
+    //    //unload previous scenes to avoid nullrefs
 
-        EditorSceneManager.OpenScene(parentCompositeScene.ScenePath, OpenSceneMode.Additive);
+    //    EditorSceneManager.OpenScene(parentCompositeScene.ScenePath, OpenSceneMode.Additive);
 
-        OpenChildrenRecursively(parentCompositeScene);
-    }
+    //    OpenChildrenRecursively(parentCompositeScene);
+    //}
 
-    private void OpenChildrenRecursively(CompositeScene scene)
-    {
-        foreach (var child in scene.SubScenes)
-        {
-            EditorSceneManager.OpenScene(child.ScenePath, OpenSceneMode.Additive);
-            OpenChildrenRecursively(child);
-        }
-    }
+    //private static void OpenChildrenRecursively(CompositeScene scene)
+    //{
+    //    foreach (var child in scene.SubScenes)
+    //    {
+    //        EditorSceneManager.OpenScene(child.ScenePath, OpenSceneMode.Additive);
+    //        OpenChildrenRecursively(child);
+    //    }
+    //}
 }
