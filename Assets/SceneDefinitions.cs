@@ -6,7 +6,7 @@ using UnityEngine;
 [Serializable]
 public class CompositeScene
 {
-    [AssetFullPathGetter, SerializeField] private string scenePath;
+    [ScenePathGetter, SerializeField] private string scenePath;
     [SerializeField] private List<CompositeScene> subScenes;
 
     public string ScenePath { get { return scenePath; } }
@@ -16,7 +16,7 @@ public class CompositeScene
 [CreateAssetMenu(fileName = "SceneDefinitions")]
 public class SceneDefinitions : SerializedScriptableObject
 {
-    [AssetFullPathGetter, SerializeField] private string rootScenePath;
+    [ScenePathGetter, SerializeField] private string rootScenePath;
     [SerializeField] private List<CompositeScene> loadableScenes;
 
     public string RootScenePath { get { return rootScenePath; } }
