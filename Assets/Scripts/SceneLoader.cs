@@ -3,6 +3,10 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
+    [SerializeField] private SceneDefinitions sceneDefinitions;
+    
+    public SceneDefinitions SceneDefinitions { get { return sceneDefinitions; } }
+
     public static SceneLoader Instance { get; private set; }
 
     private SceneADependencies sceneADependenciesData;
@@ -48,9 +52,9 @@ public class SceneLoader : MonoBehaviour
             return;
         }
 
-        for (int i = 0; i < sceneData.Scenes.Count; i++)
-        {
-            SceneManager.LoadScene(sceneData.Scenes[i], LoadSceneMode.Additive);
-        }
+        //for (int i = 0; i < sceneData.Scenes.Count; i++)
+        //{
+        //    SceneManager.LoadScene(sceneData.Scenes[i], LoadSceneMode.Additive);
+        //}
     }
 }

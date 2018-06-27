@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PhilSceneManager : MonoBehaviour
 {
-    public TSSceneDefinitions sceneDefinitions;
+    public SceneDefinitions sceneDefinitions;
 
     private void Awake()
     {

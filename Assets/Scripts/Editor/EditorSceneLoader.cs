@@ -1,6 +1,5 @@
 ﻿using UnityEditor;
 using UnityEditor.SceneManagement;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 
 [InitializeOnLoad]
@@ -31,10 +30,10 @@ public static class EditorSceneLoader
             return;
         }
 
-        for (int i = 0; i < sceneData.Scenes.Count; i++)
-        {
-            var subScene = EditorSceneManager.OpenScene(sceneData.Scenes[i], OpenSceneMode.Additive);
-            SceneManager.SetActiveScene(subScene);
-        }
+        //for (int i = 0; i < sceneData.Scenes.Count; i++)
+        //{
+        //    var subScene = EditorSceneManager.OpenScene(sceneData.Scenes[i], OpenSceneMode.Additive);
+        //    SceneManager.SetActiveScene(subScene);
+        //}
     }
 }

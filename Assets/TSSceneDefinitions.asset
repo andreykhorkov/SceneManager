@@ -11,9 +11,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eafd3cce0dd7d674f8cf3747c802083c, type: 3}
   m_Name: TSSceneDefinitions
   m_EditorClassIdentifier: 
-  rootScene: Assets/TSMain.unity
+  rootScenePath: Assets/Scenes/Main.unity
   loadableScenes:
-  - sceneId: Assets/TSChild_1.unity
+  - scenePath: Assets/Scenes/A.unity
+    subScenes: []
+  - scenePath: Assets/Scenes/B.unity
+    subScenes: []
+  - scenePath: Assets/Scenes/D.unity
     subScenes:
-    - sceneId: Assets/TSChild_1_1.unity
+    - scenePath: Assets/Scenes/D_A.unity
       subScenes: []

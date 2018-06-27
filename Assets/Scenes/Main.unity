@@ -140,6 +140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 685f9277aa5eec64cada58e7f4903e8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sceneDefinitions: {fileID: 11400000, guid: eb7c104325ecd6c4984458394e10d386, type: 2}
 --- !u!4 &888579163
 Transform:
   m_ObjectHideFlags: 0
