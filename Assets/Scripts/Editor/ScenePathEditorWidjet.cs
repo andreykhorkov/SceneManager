@@ -38,11 +38,11 @@ public class ScenePathEditorWidjet : ObjectToFullpathEditorWidget
                     EditorSceneManager.CloseScene(SceneManager.GetSceneAt(i), true);
                 }
 
-                var compositeScene = Temp.TryFindSceneRecursively(path, sceneDefinitions.LoadableScenes);
+                var compositeScene = SceneLoader.FindSceneRecursively(path, sceneDefinitions.LoadableScenes);
 
                 if (compositeScene != null)
                 {
-                    Temp.LoadSceneAndItsSubscenesEditor(compositeScene, sceneDefinitions);
+                    SceneLoader.LoadSceneAndItsSubscenesEditor(compositeScene, sceneDefinitions);
                 }
                 else
                 {
