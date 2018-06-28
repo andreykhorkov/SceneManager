@@ -50,7 +50,8 @@ public class SceneLoader : MonoBehaviour
 
         for (int i = 0; i < sceneData.Scenes.Count; i++)
         {
-            SceneManager.LoadScene(sceneData.Scenes[i], LoadSceneMode.Additive);
+            var name = sceneData.Scenes[i];
+            SceneManager.LoadScene(name, LoadSceneMode.Additive);
         }
     }
 }

@@ -223,7 +223,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scenes:
   - Assets/Scenes/B.unity
-  - Assets/Scenes/B.unity
+  - Assets/Scenes/C.unity
   - Assets/Scenes/D.unity
 --- !u!4 &221904915
 Transform:
