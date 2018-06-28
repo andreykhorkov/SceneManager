@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
-public class ScenePathGetterAttribute : PropertyAttribute
+namespace TSAttributes
 {
+    public class ScenePathGetterAttribute : PropertyAttribute
+    {
+    }
 }

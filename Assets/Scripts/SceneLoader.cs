@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+#if UNITY_EDITOR
 using UnityEditor.SceneManagement;
+#endif
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -29,6 +31,7 @@ public class SceneLoader : MonoBehaviour
         }
     }
 
+#if UNITY_EDITOR
     public static void LoadSceneAndItsSubscenesEditor(CompositeScene parentCompositeScene, SceneDefinitions sceneDefinitions)
     {
         //load root scene additively
@@ -49,6 +52,7 @@ public class SceneLoader : MonoBehaviour
             OpenSubScenesRecursivelyEditor(child);
         }
     }
+#endif
 
     public void LoadSceneAndItsSubscenes(CompositeScene parentCompositeScene)
     {

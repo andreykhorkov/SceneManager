@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 
-public class AssetResourcesPathGetterAttribute : PropertyAttribute
+namespace TSAttributes
 {
+    public class AssetResourcesPathGetterAttribute : PropertyAttribute
+    {
+    }
 }
+
 

@@ -3,100 +3,55 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-[CustomPropertyDrawer(typeof(ScenePathGetterAttribute))]
-public class ScenePathEditorWidjet : ObjectToFullpathEditorWidget
+namespace TSAttributes
 {
-    protected const string LOAD_SCENE_BTN_TEXT = "load";
-
-    protected Rect loadSceneBtnRect;
-    protected SceneDefinitions sceneDefinitions;
-
-    public override void OnGUI(Rect initialRect, SerializedProperty property, GUIContent label)
+    [CustomPropertyDrawer(typeof(ScenePathGetterAttribute))]
+    public class ScenePathEditorWidjet : ObjectToFullpathEditorWidget
     {
-        loadSceneBtnRect = new Rect(initialRect.x + GUI.skin.label.CalcSize(new GUIContent(LOAD_SCENE_BTN_TEXT + 100)).x, initialRect.y + defaultLineHeight, GUI.skin.label.CalcSize(new GUIContent(LOAD_SCENE_BTN_TEXT + 50)).x, defaultLineHeight);
-        sceneDefinitions = property.serializedObject.targetObject as SceneDefinitions;
+        protected const string LOAD_SCENE_BTN_TEXT = "load";
 
-        base.OnGUI(initialRect, property, label);
-    }
+        protected Rect loadSceneBtnRect;
+        protected SceneDefinitions sceneDefinitions;
 
-    protected override void DrawThings(ref Rect initialRect)
-    {
-        if (string.IsNullOrEmpty(path))
+        public override void OnGUI(Rect initialRect, SerializedProperty property, GUIContent label)
         {
-            SetPath(ref path, ref initialRect, ref defaultLineHeight);
+            loadSceneBtnRect = new Rect(initialRect.x + GUI.skin.label.CalcSize(new GUIContent(LOAD_SCENE_BTN_TEXT + 100)).x, initialRect.y + defaultLineHeight, GUI.skin.label.CalcSize(new GUIContent(LOAD_SCENE_BTN_TEXT + 50)).x, defaultLineHeight);
+            sceneDefinitions = property.serializedObject.targetObject as SceneDefinitions;
+
+            base.OnGUI(initialRect, property, label);
         }
-        else if (!string.Equals(path, sceneDefinitions.RootScenePath))
+
+        protected override void DrawThings(ref Rect initialRect)
         {
-            if (GUI.Button(resetBtnRect, RESET_BTN_TEXT))
+            if (string.IsNullOrEmpty(path))
             {
-                path = string.Empty;
+                SetPath(ref path, ref initialRect, ref defaultLineHeight);
             }
-            else if (GUI.Button(loadSceneBtnRect, LOAD_SCENE_BTN_TEXT))
+            else if (!string.Equals(path, sceneDefinitions.RootScenePath))
             {
-                for (int i = 0; i < SceneManager.sceneCount; i++)
+                if (GUI.Button(resetBtnRect, RESET_BTN_TEXT))
                 {
-                    EditorSceneManager.CloseScene(SceneManager.GetSceneAt(i), true);
+                    path = string.Empty;
                 }
-
-                var compositeScene = SceneLoader.FindSceneRecursively(path, sceneDefinitions.LoadableScenes);
-
-                if (compositeScene != null)
+                else if (GUI.Button(loadSceneBtnRect, LOAD_SCENE_BTN_TEXT))
                 {
-                    SceneLoader.LoadSceneAndItsSubscenesEditor(compositeScene, sceneDefinitions);
-                }
-                else
-                {
-                    Debug.LogError("Can't load scene " + path);
+                    for (int i = 0; i < SceneManager.sceneCount - 1; i++)
+                    {
+                        EditorSceneManager.CloseScene(SceneManager.GetSceneAt(i), true);
+                    }
+
+                    var compositeScene = SceneLoader.FindSceneRecursively(path, sceneDefinitions.LoadableScenes);
+
+                    if (compositeScene != null)
+                    {
+                        SceneLoader.LoadSceneAndItsSubscenesEditor(compositeScene, sceneDefinitions);
+                    }
+                    else
+                    {
+                        Debug.LogError("Can't load scene " + path);
+                    }
                 }
             }
         }
     }
-
-    //private static CompositeScene TryFindSceneRecursively(string path, List<CompositeScene> scenes)
-    //{
-    //    for (int i = 0; i < scenes.Count; i++)
-    //    {
-    //        var compositeScene = scenes[i];
-
-    //        if (string.Equals(path, compositeScene.ScenePath))
-    //        {
-    //            return compositeScene;
-    //        }
-    //    }
-
-    //    for (int i = 0; i < scenes.Count; i++)
-    //    {
-    //        var compositeScene = scenes[i];
-
-    //        var neededScene = TryFindSceneRecursively(path, compositeScene.SubScenes);
-
-    //        if (neededScene != null)
-    //        {
-    //            return neededScene;
-    //        }
-    //    }
-
-    //    return null;
-    //}
-
-    //private static void LoadSceneAndItsChildren(CompositeScene parentCompositeScene, SceneDefinitions sceneDefinitions)
-    //{
-    //    //load root scene additively
-    //    EditorSceneManager.OpenScene(sceneDefinitions.RootScenePath, OpenSceneMode.Single);
-
-    //    //unload previous scenes to avoid nullrefs
-
-    //    EditorSceneManager.OpenScene(parentCompositeScene.ScenePath, OpenSceneMode.Additive);
-
-    //    OpenChildrenRecursively(parentCompositeScene);
-    //}
-
-    //private static void OpenChildrenRecursively(CompositeScene scene)
-    //{
-    //    foreach (var child in scene.SubScenes)
-    //    {
-    //        EditorSceneManager.OpenScene(child.ScenePath, OpenSceneMode.Additive);
-    //        OpenChildrenRecursively(child);
-    //    }
-    //}
 }

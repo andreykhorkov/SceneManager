@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
-public class AssetFullPathGetterAttribute : PropertyAttribute
+namespace TSAttributes
 {
+    public class AssetFullPathGetterAttribute : PropertyAttribute
+    {
+    }
 }
