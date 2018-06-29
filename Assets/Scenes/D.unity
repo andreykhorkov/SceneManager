@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311918, g: 0.3807398, b: 0.35872716, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -219,6 +219,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 2134612403}
+  - component: {fileID: 2134612404}
   - component: {fileID: 2134612402}
   m_Layer: 0
   m_Name: SceneData
@@ -235,11 +236,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2134612401}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2af4332e11878a14bba8fc992d3e1360, type: 3}
+  m_Script: {fileID: 11500000, guid: dea5aaeb56c6d8e4c961822bc6d74aa5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scenes:
-  - Assets/Scenes/D_A.unity
+  sceneLoader: {fileID: 0}
 --- !u!4 &2134612403
 Transform:
   m_ObjectHideFlags: 0
@@ -253,3 +253,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2134612404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2134612401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89715ad69b973a14899afa2c6730b30b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _installers: []
+  _installerPrefabs: []
+  _scriptableObjectInstallers: []
+  _autoRun: 1
+  _parentNewObjectsUnderRoot: 0
+  _contractNames: []
+  _parentContractNames: []

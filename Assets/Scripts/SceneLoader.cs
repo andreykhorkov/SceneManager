@@ -1,21 +1,33 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 #if UNITY_EDITOR
 using UnityEditor.SceneManagement;
 #endif
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Zenject;
 
-public class SceneLoader : MonoBehaviour
+public class SceneLoader : MonoInstaller<SceneLoader>
 {
     [SerializeField] private SceneDefinitions sceneDefinitions;
     
     public SceneDefinitions SceneDefinitions { get { return sceneDefinitions; } }
 
-    public static SceneLoader Instance { get; private set; }
+    private ZenjectSceneLoader _loader;
+
+    [Inject]
+    public void Init(ZenjectSceneLoader loader)
+    {
+        _loader = loader;
+    }
+
+    public override void InstallBindings()
+    {
+        Container.BindInstance(this).AsSingle();
+    }
 
     void Awake()
     {
-        Instance = this;
         DontDestroyOnLoad(this);
     }
 
@@ -60,7 +72,7 @@ public class SceneLoader : MonoBehaviour
 
         if (!mainScene.IsValid())
         {
-            SceneManager.LoadScene(sceneDefinitions.RootScenePath, LoadSceneMode.Single);
+            _loader.LoadScene(sceneDefinitions.RootScenePath, LoadSceneMode.Single, ExtraBindings);
         }
         else
         {
@@ -75,8 +87,13 @@ public class SceneLoader : MonoBehaviour
             }
         }
 
-        SceneManager.LoadScene(parentCompositeScene.ScenePath, LoadSceneMode.Additive);
+        _loader.LoadScene(parentCompositeScene.ScenePath, LoadSceneMode.Additive, null, LoadSceneRelationship.Child);
         OpenSubscenesRecursively(parentCompositeScene);
+    }
+
+    private void ExtraBindings(DiContainer diContainer)
+    {
+        diContainer.BindInstance(this).AsSingle();
     }
 
     public void LoadSceneAndItsSubscenes(string parentSceneName)
@@ -95,7 +112,7 @@ public class SceneLoader : MonoBehaviour
     {
         for (int i = 0; i < scene.SubScenes.Count; i++)
         {
-            SceneManager.LoadScene(scene.SubScenes[i].ScenePath, LoadSceneMode.Additive);
+            _loader.LoadScene(scene.SubScenes[i].ScenePath, LoadSceneMode.Additive, null, LoadSceneRelationship.Child);
             OpenSubscenesRecursively(scene.SubScenes[i]);
         }
     }
